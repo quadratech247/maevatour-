@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Our Travel Packages — Maeva Tours</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ── DESIGN SYSTEM & RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ocean: #05152d; /* Deep rich dark navy */
+  --lagoon: #15627a; /* Sleek tropical teal */
+  --coral: #f05d47; /* Premium vibrant coral red */
+  --sand: #f8f4ed; /* Premium warm sand background */
+  --pearl: #fdfbf9; /* Ultra premium off-white */
+  --gold: #dfba6b; /* Luxury soft gold */
+  --gold-dark: #b89345;
+  --white: #ffffff;
+  --text: #1b222d; /* Dark slate text */
+  --text-light: #526071; /* Muted text */
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Outfit', sans-serif;
+  --transition: all 0.45s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --shadow-sm: 0 4px 12px rgba(5,21,45,0.03);
+  --shadow-md: 0 16px 40px rgba(5,21,45,0.08);
+  --shadow-lg: 0 32px 72px rgba(5,21,45,0.14);
+  --border-radius: 12px;
+  --border-radius-sm: 6px;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); color: var(--text); background: var(--pearl); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+/* ── PROGRESS BAR ── */
+#scroll-progress {
+  position: fixed; top: 0; left: 0; height: 4px; width: 0%;
+  background: linear-gradient(90deg, var(--lagoon), var(--coral), var(--gold));
+  z-index: 9999; transition: width 0.1s linear;
+}
+
+/* ── LOADER ── */
+#loader {
+  position: fixed; inset: 0; z-index: 10000;
+  background: var(--ocean);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 24px;
+  transition: opacity 0.8s cubic-bezier(0.77,0,0.18,1), visibility 0.8s ease;
+}
+#loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.loader-brand {
+  font-family: var(--serif); font-size: 3rem; color: var(--gold);
+  font-weight: 300; letter-spacing: 0.1em;
+  clip-path: inset(0 100% 0 0);
+  animation: revealText 1.2s 0.2s cubic-bezier(0.77,0,0.18,1) forwards;
+}
+@keyframes revealText { to { clip-path: inset(0 0% 0 0); } }
+.loader-track {
+  width: 240px; height: 2px; background: rgba(255,255,255,0.08); position: relative; overflow: hidden; border-radius: 2px;
+}
+.loader-fill {
+  position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, var(--lagoon), var(--coral));
+  animation: loadFill 1.5s 0.3s cubic-bezier(0.77,0,0.18,1) forwards;
+}
+@keyframes loadFill { to { left: 0; } }
+.loader-pct {
+  font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor { width: 8px; height: 8px; border-radius: 50%; background: var(--coral); position: fixed; top:0; left:0; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition: transform 0.1s; }
+.cursor-ring { width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--coral); position: fixed; top:0; left:0; pointer-events:none; z-index:9997; transform:translate(-50%,-50%); opacity: 0.6; transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s; }
+.cursor-text { position: fixed; top:0; left:0; pointer-events:none; z-index:9996; transform:translate(-50%,-50%); font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:#fff; opacity:0; transition:opacity 0.25s; font-family:var(--sans); font-weight:600; text-align:center; width:80px; }
+
+/* ── NAVIGATION ── */
+nav { position:fixed; top:0; width:100%; z-index:500; padding:28px 60px; display:flex; align-items:center; justify-content:space-between; transition: var(--transition); background: rgba(5,21,45,0.95); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(223,186,107,0.1); }
+nav.scrolled { padding:16px 60px; border-bottom: 1px solid rgba(223,186,107,0.15); box-shadow:0 10px 40px rgba(0,0,0,0.15); }
+.nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; z-index: 600; }
+.nav-logo img { height:44px; filter:brightness(0) invert(1); transition: var(--transition); }
+.nav-logo-text { display:none; font-family:var(--serif); font-size:1.65rem; color:#fff; font-weight:300; letter-spacing:0.05em; }
+.nav-links { display:flex; gap:36px; list-style:none; }
+.nav-links a { color:rgba(255,255,255,0.8); text-decoration:none; font-size:0.78rem; letter-spacing:0.15em; text-transform:uppercase; font-weight:500; position:relative; padding-bottom:4px; transition:color 0.3s; }
+.nav-links a::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1.5px; background:var(--gold); transition:width 0.35s ease; }
+.nav-links a:hover { color:#fff; }
+.nav-links a:hover::after { width:100%; }
+.nav-cta { background:var(--coral); color:#fff; padding:12px 28px; border-radius:4px; font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; font-weight:600; border: 1.5px solid var(--coral); transition: var(--transition); }
+.nav-cta:hover { background:transparent; color:var(--coral); box-shadow:0 8px 24px rgba(240,93,71,0.25); }
+
+/* MOBILE HAMBURGER */
+.nav-toggle { display: none; background: transparent; border: none; cursor: pointer; z-index: 600; padding: 4px; }
+.nav-toggle span { display: block; width: 24px; height: 2px; background: #fff; margin: 6px 0; transition: var(--transition); }
+.nav-toggle.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* ── HERO BANNER ── */
+#hero { height:65vh; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.hero-bg {
+  position:absolute; inset:0;
+  background:url('images/beautiful-scaled.jpg') center/cover no-repeat;
+  will-change:transform;
+  transform: scale(1.1);
+  animation: heroZoomIn 2.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+@keyframes heroZoomIn {
+  to { transform: scale(1.02); }
+}
+.hero-overlay { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(5,21,45,0.75) 0%, rgba(5,21,45,0.4) 45%, rgba(5,21,45,0.95) 100%); }
+.hero-content { position:relative; z-index:2; text-align:center; color:#fff; padding:0 24px; max-width: 900px; margin-top: 60px; }
+.hero-eyebrow { font-size:0.75rem; letter-spacing:0.4em; text-transform:uppercase; color:var(--gold); margin-bottom:18px; font-weight: 600; }
+.hero-title { font-family:var(--serif); font-size:clamp(2.6rem,6vw,5rem); font-weight:300; line-height:1.1; letter-spacing:-0.01em; margin-bottom:14px; }
+.hero-title em { font-style:italic; color:var(--gold); font-family: var(--serif); }
+.hero-sub { font-size:1.1rem; font-weight:300; color:rgba(255,255,255,0.85); letter-spacing:0.04em; }
+
+/* ── SUB NAVIGATION BAR ── */
+.sub-nav { background: var(--ocean); padding: 18px 0; border-bottom: 1px solid rgba(223,186,107,0.15); position: sticky; top: 92px; z-index: 400; text-align: center; }
+.sub-nav a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; margin: 0 24px; transition: var(--transition); }
+.sub-nav a:hover, .sub-nav a.active { color: var(--gold); border-bottom: 1.5px solid var(--gold); padding-bottom: 4px; }
+
+/* ── SECTIONS GENERAL ── */
+section { padding:110px 80px; }
+.section-eyebrow { font-size:0.7rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--coral); margin-bottom:14px; font-weight: 600; overflow:hidden; }
+.section-eyebrow span { display:inline-block; }
+.section-title { font-family:var(--serif); font-size:clamp(2.2rem,4.5vw,3.6rem); font-weight:300; line-height:1.15; color:var(--ocean); letter-spacing: -0.01em; margin-bottom: 24px; }
+.section-title em { font-style:italic; color:var(--lagoon); font-family: var(--serif); }
+.section-line { width:0; height:2px; background:var(--coral); margin-bottom:44px; transition:width 1s cubic-bezier(0.25,0.46,0.45,0.94) 0.2s; }
+.section-line.visible { width:70px; }
+
+/* ── REVEAL SYSTEM ── */
+.rv { opacity:0; transform:translateY(36px); transition:opacity 0.85s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94); }
+.rv.visible { opacity:1; transform:none; }
+.rv-left { opacity:0; transform:translateX(-40px); transition:opacity 0.85s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94); }
+.rv-left.visible { opacity:1; transform:none; }
+.rv-right { opacity:0; transform:translateX(40px); transition:opacity 0.85s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94); }
+.rv-right.visible { opacity:1; transform:none; }
+.d1 { transition-delay:0.08s; } .d2 { transition-delay:0.16s; } .d3 { transition-delay:0.24s; }
+
+/* ── PACKAGE 1: CALIFORNIA EXPERIENCE ── */
+#california { background: var(--pearl); }
+.california-intro { max-width: 800px; margin-bottom: 64px; }
+.california-intro p { font-size: 1.08rem; line-height: 1.8; color: var(--text-light); }
+
+/* Timeline Itinerary styling */
+.itinerary-container { position: relative; max-width: 1000px; margin: 40px auto 0; padding-left: 50px; }
+.itinerary-container::before { content: ''; position: absolute; left: 19px; top: 8px; bottom: 8px; width: 2px; background: rgba(21,98,122,0.15); }
+.itinerary-day { position: relative; margin-bottom: 56px; }
+.itinerary-day:last-child { margin-bottom: 0; }
+.itinerary-dot { position: absolute; left: -50px; top: 4px; width: 40px; height: 40px; border-radius: 50%; background: var(--white); border: 2.5px solid var(--lagoon); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: var(--lagoon); box-shadow: var(--shadow-sm); transition: var(--transition); z-index: 2; }
+.itinerary-day:hover .itinerary-dot { background: var(--lagoon); color: var(--white); box-shadow: 0 0 0 6px rgba(21,98,122,0.12); }
+.itinerary-content { background: var(--white); padding: 36px; border-radius: var(--border-radius); border: 1px solid rgba(5,21,45,0.04); box-shadow: var(--shadow-sm); transition: var(--transition); }
+.itinerary-day:hover .itinerary-content { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: rgba(223,186,107,0.25); }
+.itinerary-content h3 { font-family: var(--serif); font-size: 1.6rem; color: var(--ocean); margin-bottom: 12px; font-weight: 600; }
+.itinerary-content p { font-size: 0.96rem; line-height: 1.75; color: var(--text-light); }
+
+.highlights-tag { display: inline-block; background: var(--sand); color: var(--ocean); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 12px; border-radius: 4px; font-weight: 600; margin-top: 14px; margin-right: 8px; }
+
+/* ── PACKAGE 2: CRUISE IN MEXICO ── */
+#mexico { background: var(--sand); }
+.mexico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.mexico-text p { font-size: 1.05rem; line-height: 1.8; color: var(--text-light); margin-bottom: 24px; }
+.mexico-features { list-style: none; margin-bottom: 36px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.mexico-features li { font-size: 0.92rem; font-weight: 500; color: var(--ocean); display: flex; align-items: center; gap: 10px; }
+.mexico-features li::before { content: '✓'; color: var(--coral); font-weight: 700; font-size: 1.1rem; }
+
+/* Flyer Card & Lightbox Preview */
+.flyer-preview-card { position: relative; border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow-lg); cursor: pointer; aspect-ratio: 3/4; background: var(--white); transition: var(--transition); max-width: 440px; margin: 0 auto; }
+.flyer-preview-card:hover { transform: translateY(-8px); }
+.flyer-preview-card img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+.flyer-preview-card:hover img { transform: scale(1.04); }
+.flyer-badge { position: absolute; top: 20px; left: 20px; background: var(--coral); color: var(--white); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em; padding: 6px 14px; border-radius: 20px; font-weight: 600; z-index: 2; }
+.flyer-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,21,45,0.92) 0%, rgba(5,21,45,0.3) 60%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 32px; color: var(--white); opacity: 0; transition: opacity 0.4s ease; }
+.flyer-preview-card:hover .flyer-overlay { opacity: 1; }
+.flyer-overlay h4 { font-family: var(--serif); font-size: 1.5rem; font-weight: 300; margin-bottom: 6px; }
+.flyer-overlay p { font-size: 0.72rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+
+/* ── LIGHTBOX MODAL ── */
+.lightbox-modal { display: none; position: fixed; inset: 0; z-index: 11000; background: rgba(5,21,45,0.93); backdrop-filter: blur(10px); align-items: center; justify-content: center; padding: 40px; }
+.lightbox-modal.active { display: flex; }
+.lightbox-close { position: absolute; top: 24px; right: 36px; font-size: 3.5rem; color: var(--white); cursor: pointer; transition: var(--transition); z-index: 11002; }
+.lightbox-close:hover { color: var(--coral); }
+.lightbox-content { display: flex; max-width: 960px; width: 100%; background: var(--white); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow-lg); position: relative; z-index: 11001; animation: modalZoom 0.45s cubic-bezier(0.25, 0.8, 0.25, 1); }
+@keyframes modalZoom { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.lightbox-content img { width: 50%; max-height: 75vh; object-fit: cover; background: #000; }
+.lightbox-info { padding: 48px; width: 50%; display: flex; flex-direction: column; justify-content: center; background: var(--white); }
+.lightbox-info h3 { font-family: var(--serif); font-size: 2.2rem; color: var(--ocean); margin-bottom: 16px; font-weight: 300; }
+.lightbox-info p { font-size: 0.98rem; color: var(--text-light); line-height: 1.7; margin-bottom: 30px; }
+
+/* ── ALTERNATIVE OFFERS ROW ── */
+#alternatives { background: var(--pearl); padding: 100px 80px; }
+.alternatives-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 48px; }
+.alt-card { display: flex; gap: 24px; background: var(--white); padding: 28px; border-radius: var(--border-radius); border: 1px solid rgba(5,21,45,0.04); box-shadow: var(--shadow-sm); cursor: pointer; transition: var(--transition); }
+.alt-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: rgba(223,186,107,0.2); }
+.alt-card img { width: 110px; height: 140px; object-fit: cover; border-radius: 6px; box-shadow: var(--shadow-sm); }
+.alt-info { display: flex; flex-direction: column; justify-content: center; }
+.alt-info h4 { font-family: var(--serif); font-size: 1.35rem; color: var(--ocean); margin-bottom: 8px; }
+.alt-info p { font-size: 0.88rem; color: var(--text-light); line-height: 1.5; margin-bottom: 8px; }
+.alt-link { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--coral); font-weight: 600; }
+
+/* ── CONTACT ── */
+#contact { background:var(--sand); padding:110px 80px 0; }
+.contact-grid { display:grid; grid-template-columns:1.25fr 1fr; gap:90px; align-items:start; padding-bottom:100px; border-bottom:1px solid rgba(5,21,45,0.1); }
+.contact-form { display:flex; flex-direction:column; gap:24px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.form-group { display:flex; flex-direction:column; gap:8px; }
+.form-group label { font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); font-weight:600; }
+.form-group input, .form-group select, .form-group textarea { border:1.5px solid rgba(5,21,45,0.12); background:var(--white); padding:14px 18px; font-family:var(--sans); font-size:0.95rem; color:var(--text); border-radius: 6px; outline:none; transition: var(--transition); }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--lagoon); box-shadow:0 0 0 4px rgba(21,98,122,0.1); transform:translateY(-1px); }
+.form-group textarea { resize:vertical; min-height:130px; }
+.form-submit { background:var(--ocean); color:#fff; padding:16px 48px; border:none; cursor:pointer; font-family:var(--sans); font-size:0.8rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:600; border-radius:4px; align-self:flex-start; transition: var(--transition); }
+.form-submit:hover { background:var(--lagoon); transform:translateY(-3px); box-shadow:0 12px 30px rgba(5,21,45,0.2); }
+.contact-info h3 { font-family:var(--serif); font-size:2.2rem; font-weight:300; color:var(--ocean); margin-bottom:36px; }
+.contact-detail { display:flex; gap:20px; align-items:flex-start; margin-bottom:30px; }
+.contact-icon { width:46px; height:46px; border-radius:50%; background:var(--ocean); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; transition: var(--transition); }
+.contact-detail:hover .contact-icon { transform:scale(1.1) rotate(6deg); background:var(--coral); }
+.contact-detail-text p { font-size:0.75rem; color:var(--text-light); margin-bottom:4px; letter-spacing:0.1em; text-transform:uppercase; font-weight: 500; }
+.contact-detail-text a, .contact-detail-text span { color:var(--ocean); font-size:1.02rem; font-weight:600; text-decoration:none; display:block; margin-bottom:2px; transition:color 0.2s; }
+.contact-detail-text a:hover { color:var(--coral); }
+
+#form-success { display:none; color:var(--lagoon); font-size:0.92rem; margin-top:10px; padding:14px 18px; background:rgba(21,98,122,0.06); border-radius:4px; border-left:4px solid var(--lagoon); animation: fadeIn 0.4s ease; }
+
+footer { background:var(--ocean); color:rgba(255,255,255,0.55); padding:60px 80px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:30px; border-top: 1px solid rgba(223,186,107,0.15); }
+.footer-logo img { height:36px; filter:brightness(0) invert(1); opacity:0.8; }
+.footer-logo-text { display:none; font-family:var(--serif); font-size:1.4rem; color:rgba(255,255,255,0.8); font-weight:300; }
+footer p { font-size:0.8rem; }
+.footer-links { display:flex; gap:28px; list-style:none; }
+.footer-links a { color:rgba(255,255,255,0.45); text-decoration:none; font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; transition:color 0.3s; }
+.footer-links a:hover { color:var(--gold); }
+
+/* ── RESPONSIVENESS ── */
+@media (max-width:1100px) {
+  section { padding:100px 40px; }
+  #contact { padding: 100px 40px 0; }
+  nav { padding: 20px 40px; }
+  nav.scrolled { padding: 12px 40px; }
+  .mexico-grid { gap: 40px; }
+}
+
+@media (max-width:1024px) {
+  .sub-nav { top: 76px; }
+}
+
+@media (max-width:900px) {
+  .mexico-grid { grid-template-columns: 1fr; gap: 50px; }
+  .flyer-preview-card { max-width: 380px; }
+  .alternatives-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width:768px) {
+  section { padding:80px 24px; }
+  #contact { padding:80px 24px 0; }
+  nav { padding:18px 24px; }
+  nav.scrolled { padding:12px 24px; }
+  
+  .sub-nav { top: 74px; }
+  .sub-nav a { font-size: 0.72rem; margin: 0 12px; }
+
+  /* MOB NAV POPUP */
+  .nav-toggle { display: block; }
+  .nav-links {
+    position: fixed; inset: 0; top: 0; background: var(--ocean);
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 40px; transform: translateX(100%); transition: transform 0.6s cubic-bezier(0.77,0,0.18,1);
+    z-index: 550;
+  }
+  .nav-links.active { transform: translateX(0); }
+  .nav-links a { font-size: 1.15rem; }
+  .nav-cta { display: none; }
+  
+  .itinerary-container { padding-left: 32px; }
+  .itinerary-container::before { left: 11px; }
+  .itinerary-dot { left: -32px; width: 24px; height: 24px; font-size: 0.7rem; border-width: 1.5px; top: 8px; }
+  .itinerary-content { padding: 24px; }
+  
+  .contact-grid { grid-template-columns:1fr; gap:50px; }
+  .form-row { grid-template-columns:1fr; }
+  footer { flex-direction:column; text-align:center; padding: 40px 24px; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
+  
+  .lightbox-content { flex-direction: column; width: 90%; max-height: 85vh; overflow-y: auto; }
+  .lightbox-content img { width: 100%; max-height: 40vh; }
+  .lightbox-info { width: 100%; padding: 30px; }
+}
+</style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS -->
+<div id="scroll-progress"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-brand">Maeva Tours</div>
+  <div class="loader-track"><div class="loader-fill"></div></div>
+  <div class="loader-pct" id="loaderPct">Loading…</div>
+</div>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-text" id="cursorText">Explore</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="images/Marva-logo.png" alt="Maeva Tours" onerror="this.style.display='none'; document.querySelector('.nav-logo-text').style.display='block'"/>
+    <span class="nav-logo-text">Maeva Tours</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#destinations">Destinations</a></li>
+    <li><a href="#" class="active">Packages</a></li>
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#testimonials">Stories</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div style="display: flex; align-items: center; gap: 20px;">
+    <a href="#contact" class="nav-cta">Plan a Trip</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">✦ Handcrafted Escapes ✦</p>
+    <h1 class="hero-title">Our Featured <em>Packages</em></h1>
+    <p class="hero-sub">Immersive itineraries tailored for extraordinary memories</p>
+  </div>
+</section>
+
+<!-- SUB NAVIGATION -->
+<div class="sub-nav">
+  <a href="#california" class="sub-link active">California Experience</a>
+  <a href="#mexico" class="sub-link">Cruise in Mexico</a>
+  <a href="#contact" class="sub-link">Request Custom Package</a>
+</div>
+
+<!-- PACKAGE 1: CALIFORNIA EXPERIENCE -->
+<section id="california">
+  <div class="california-intro rv">
+    <p class="section-eyebrow"><span>Adventure 1</span></p>
+    <div class="section-line rv d1"></div>
+    <h2 class="section-title">California Dreamin’ —<br>Your Ultimate <em>Golden State</em> Adventure</h2>
+    <p>Welcome to the land where the sun kisses the Pacific and dreams become reality. Our California Experience travel package is your golden ticket to adventure, culture, and relaxation – all in one unforgettable week.</p>
+  </div>
+
+  <div class="itinerary-container">
+    <!-- Day 1 -->
+    <div class="itinerary-day rv">
+      <div class="itinerary-dot">1</div>
+      <div class="itinerary-content">
+        <h3>Welcome to Los Angeles</h3>
+        <p>Land in the City of Angels. Get starstruck on Hollywood Boulevard, stroll through Santa Monica, and watch the sunset at Venice Beach. Optional: Studio tour at Warner Bros or Universal Studios.</p>
+        <span class="highlights-tag">Hollywood</span><span class="highlights-tag">Venice Beach</span><span class="highlights-tag">LA Arrival</span>
+      </div>
+    </div>
+
+    <!-- Day 2 -->
+    <div class="itinerary-day rv">
+      <div class="itinerary-dot">2</div>
+      <div class="itinerary-content">
+        <h3>The Glam and Glitz of LA</h3>
+        <p>Hike the Hollywood Hills for panoramic views. Explore the Getty Center’s world-class art, then end your day with fine dining in Beverly Hills.</p>
+        <span class="highlights-tag">Hollywood Hills Hike</span><span class="highlights-tag">Getty Center</span><span class="highlights-tag">Beverly Hills</span>
+      </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="itinerary-day rv">
+      <div class="itinerary-dot">3</div>
+      <div class="itinerary-content">
+        <h3>Pacific Coast Highway Road Trip</h3>
+        <p>Travel the scenic Highway 1 to Santa Barbara. Stop at Malibu’s iconic beaches. Enjoy wine tasting in Santa Ynez Valley and an overnight stay in charming coastal accommodations.</p>
+        <span class="highlights-tag">Malibu Beach</span><span class="highlights-tag">Santa Barbara</span><span class="highlights-tag">Wine Tasting</span>
+      </div>
+    </div>
+
+    <!-- Day 4-5 -->
+    <div class="itinerary-day rv">
+      <div class="itinerary-dot">4</div>
+      <div class="itinerary-content">
+        <h3>San Francisco via Big Sur</h3>
+        <p>Drive through Big Sur’s cliffs and redwoods. Arrive in San Francisco – explore the Golden Gate Bridge, Alcatraz Island, and Fisherman’s Wharf. Ride the famous cable cars and enjoy a sunset cruise in the bay.</p>
+        <span class="highlights-tag">Big Sur Cliffs</span><span class="highlights-tag">Golden Gate Bridge</span><span class="highlights-tag">Sunset Cruise</span>
+      </div>
+    </div>
+
+    <!-- Day 6 -->
+    <div class="itinerary-day rv">
+      <div class="itinerary-dot">6</div>
+      <div class="itinerary-content">
+        <h3>Wine Country Wonders</h3>
+        <p>Venture to Napa and Sonoma. Savor tastings at award-winning wineries, indulge in gourmet farm-to-table cuisine, and relax in vineyard-side spas.</p>
+        <span class="highlights-tag">Napa Valley</span><span class="highlights-tag">Sonoma Spas</span><span class="highlights-tag">Gourmet Dining</span>
+      </div>
+    </div>
+
+    <!-- Day 7 -->
+    <div class="itinerary-day rv">
+      <div class="itinerary-dot">7</div>
+      <div class="itinerary-content">
+        <h3>Farewell California</h3>
+        <p>Brunch in Sausalito with views of the Bay, then transfer to the airport. You’ll leave with full hearts, stunning photos, and golden memories.</p>
+        <span class="highlights-tag">Sausalito Brunch</span><span class="highlights-tag">Airport Transfer</span>
+      </div>
+    </div>
+  </div>
+  
+  <div style="text-align: center; margin-top: 60px;">
+    <a href="#contact" onclick="selectPackage('California Experience')" class="btn-primary">Book California Experience</a>
+  </div>
+</section>
+
+<!-- PACKAGE 2: CRUISE IN MEXICO -->
+<section id="mexico">
+  <div class="mexico-grid">
+    <div class="mexico-text rv-left">
+      <p class="section-eyebrow"><span>Adventure 2</span></p>
+      <div class="section-line rv d1"></div>
+      <h2 class="section-title">Cruise in Mexico — The <em>Black Pearl</em> Private Yacht Charter</h2>
+      <p>Embark on an extraordinary cruise along Mexico's beautiful sun-kissed coastlines. Our Private Yacht Charter service aboard the Black Pearl is designed for those who seek absolute privacy, premium sea travels, and custom luxury excursions.</p>
+      <p>Whether you're cruising through the gorgeous sea waters of Cabo San Lucas, diving with tropical marine life in Puerto Vallarta, or celebrating a special occasion with a private sunset voyage, we handle every detail.</p>
+      
+      <ul class="mexico-features">
+        <li>Private luxury yacht charter</li>
+        <li>Fully-staffed local crew</li>
+        <li>Custom chef-prepared dinners</li>
+        <li>Snorkeling &amp; watersport gear</li>
+        <li>Locations in Cabo, Vallarta &amp; Cozumel</li>
+        <li>Sunset &amp; overnight options</li>
+      </ul>
+      
+      <a href="#contact" onclick="selectPackage('Cruise in Mexico (Yacht Charter)')" class="btn-primary">Inquire About Yacht Cruise</a>
+    </div>
+    
+    <div class="rv-right d2">
+      <!-- Clickable Flyer Card -->
+      <div class="flyer-preview-card" onclick="openFlyer('images/BLACKPEARL-SS-FLYER_page-0001-927x1200.jpg', 'Black Pearl Yacht Charter', 'Embark on a private yacht charter adventure of a lifetime. Enjoy crystal lagoons, high-end amenities, and private guides in ultimate seclusion.')">
+        <div class="flyer-badge">Tap to Zoom</div>
+        <img src="images/BLACKPEARL-SS-FLYER_page-0001-927x1200.jpg" alt="Black Pearl Yacht Cruise Flyer" />
+        <div class="flyer-overlay">
+          <h4>Private Yacht Charter</h4>
+          <p>Expand Flyer Info →</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ALTERNATIVE OFFERS ROW -->
+<section id="alternatives">
+  <p class="section-eyebrow rv"><span>More Specials</span></p>
+  <div class="section-line rv d1"></div>
+  <h2 class="section-title">Other Exclusive <em>Destinations</em></h2>
+  
+  <div class="alternatives-grid">
+    <!-- Alt 1: Tahiti groups -->
+    <div class="alt-card rv" onclick="openFlyer('images/504263535_18383557855184561_1298433851654512785_n-963x1200.jpg', 'Tahiti & Islands Group Escape', 'An exclusive group package curated for friends, families, or couples. Includes luxury overwater villa bookings and snorkeling excursions.')">
+      <img src="images/504263535_18383557855184561_1298433851654512785_n-963x1200.jpg" alt="Tahiti guided tour" />
+      <div class="alt-info">
+        <h4>Tahiti &amp; Islands Group Escape</h4>
+        <p>A structured guided group getaway to the turquoise waters of Polynesia.</p>
+        <span class="alt-link">View Details</span>
+      </div>
+    </div>
+
+    <!-- Alt 2: Romantic Honeymoon -->
+    <div class="alt-card rv d1" onclick="openFlyer('images/WhatsApp-Image-2025-06-30-at-1.56.16-PM-1170x1200.jpeg', 'Luxury Honeymoon & Romantic Getaway', 'Celebrate love in style with customized candlelit beach dinners, premium flower greetings, and hand-selected luxury boutique resorts.')">
+      <img src="images/WhatsApp-Image-2025-06-30-at-1.56.16-PM-1170x1200.jpeg" alt="Romantic Honeymoon" />
+      <div class="alt-info">
+        <h4>Luxury Romantic Honeymoons</h4>
+        <p>Custom-crafted escapes, candlelit dinners, and private overwater bungalow stays.</p>
+        <span class="alt-link">View Details</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX MODAL -->
+<div id="flyerLightbox" class="lightbox-modal">
+  <span class="lightbox-close" onclick="closeFlyer()">&times;</span>
+  <div class="lightbox-content">
+    <img id="lightboxImg" src="" alt="Flyer Detail" />
+    <div class="lightbox-info">
+      <h3 id="lightboxTitle">Package Detail</h3>
+      <p id="lightboxDesc">Detailed info will populate here.</p>
+      <a href="#contact" onclick="closeFlyer()" class="btn-primary" style="margin-top:20px; align-self:flex-start;">Inquire About Package</a>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div>
+      <p class="section-eyebrow rv"><span>Inquire</span></p>
+      <div class="section-line rv d1"></div>
+      <h2 class="section-title rv d1" style="margin-bottom:36px;">Request Custom <em>Itinerary</em></h2>
+      <form class="contact-form rv d2" onsubmit="return handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group"><label>First Name</label><input type="text" id="contactFirstName" placeholder="Jane" required/></div>
+          <div class="form-group"><label>Last Name</label><input type="text" id="contactLastName" placeholder="Doe" required/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Email</label><input type="email" id="contactEmail" placeholder="jane@example.com" required/></div>
+          <div class="form-group"><label>Phone</label><input type="tel" id="contactPhone" placeholder="+1 (000) 000-0000"/></div>
+        </div>
+        <div class="form-group">
+          <label>Package of Interest</label>
+          <select id="contactDestination">
+            <option value="">Select a package…</option>
+            <option value="California Experience">California Experience (7-Day Roadtrip)</option>
+            <option value="Cruise in Mexico">Cruise in Mexico (Yacht Charter)</option>
+            <option value="Tahiti Groups">Tahiti &amp; Islands Group Escape</option>
+            <option value="Romantic Honeymoon">Luxury Romantic Honeymoon</option>
+            <option value="Custom Escapes">Custom Escape / Other Destination</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Tell us about your dream trip</label><textarea id="contactMessage" placeholder="Travel dates, number of guests, special requests…"></textarea></div>
+        <button type="submit" class="form-submit">Send Enquiry →</button>
+        <div id="form-success">✓ Thank you! We'll be in touch within 24 hours with your custom proposal.</div>
+      </form>
+    </div>
+    
+    <div class="rv-right d2">
+      <h3>Need Help Planning?</h3>
+      <div class="contact-detail">
+        <div class="contact-icon">📍</div>
+        <div class="contact-detail-text"><p>Our Offices</p><span>San Diego, CA</span><span>Los Angeles, CA</span></div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">📞</div>
+        <div class="contact-detail-text">
+          <p>Call Us</p>
+          <a href="tel:+17027244460">+1 (702) 724-4460</a>
+          <a href="tel:+18586105471">+1 (858) 610-5471</a>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">✉️</div>
+        <div class="contact-detail-text">
+          <p>Email Us</p>
+          <a href="mailto:maevatours1@gmail.com">maevatours1@gmail.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">
+    <img src="images/Marva-logo.png" alt="Maeva Tours" onerror="this.style.display='none'; document.querySelector('.footer-logo-text').style.display='block'"/>
+    <span class="footer-logo-text">Maeva Tours</span>
+  </div>
+  <p>© 2026 Maeva Tours — All Rights Reserved</p>
+  <ul class="footer-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#destinations">Destinations</a></li>
+    <li><a href="#">Packages</a></li>
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+/* ── LOADER ── */
+let pct = 0;
+const loaderPctEl = document.getElementById('loaderPct');
+const loaderInterval = setInterval(() => {
+  pct = Math.min(pct + Math.random() * 22, 99);
+  loaderPctEl.textContent = Math.round(pct) + '%';
+}, 100);
+window.addEventListener('load', () => {
+  clearInterval(loaderInterval);
+  loaderPctEl.textContent = '100%';
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 550);
+});
+
+/* ── MOBILE NAVBAR TOGGLE ── */
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => {
+  navToggle.classList.toggle('open');
+  navLinks.classList.toggle('active');
+});
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    navToggle.classList.remove('open');
+    navLinks.classList.remove('active');
+  });
+});
+
+/* ── SCROLL PROGRESS ── */
+const progressBar = document.getElementById('scroll-progress');
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  progressBar.style.width = (total > 0 ? (scrolled / total * 100) : 0) + '%';
+}, { passive: true });
+
+/* ── CUSTOM CURSOR ── */
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+const cursorText = document.getElementById('cursorText');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+(function animCursor() {
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  cursorText.style.left = rx + 'px'; cursorText.style.top = ry + 'px';
+  requestAnimationFrame(animCursor);
+})();
+
+document.querySelectorAll('.flyer-preview-card, .alt-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform = 'translate(-50%,-50%) scale(0)';
+    ring.style.width = '90px'; ring.style.height = '90px'; ring.style.background = 'rgba(240,93,71,0.06)';
+    cursorText.style.opacity = '1';
+    cursorText.textContent = "View Flyer";
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+    ring.style.width = '40px'; ring.style.height = '40px'; ring.style.background = 'transparent';
+    cursorText.style.opacity = '0';
+  });
+});
+document.querySelectorAll('a, button, input, select, textarea').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2.2)'; ring.style.opacity = '0.2'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.opacity = '0.6'; });
+});
+
+/* ── NAV SCROLL CLASS ── */
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', () => navEl.classList.toggle('scrolled', window.scrollY > 40), { passive: true });
+
+/* ── SUB NAVIGATION HIGHLIGHTS ── */
+const subLinks = document.querySelectorAll('.sub-nav a');
+const sections = document.querySelectorAll('#california, #mexico, #contact');
+window.addEventListener('scroll', () => {
+  let scrollPos = window.scrollY + 160;
+  sections.forEach(sec => {
+    if (scrollPos >= sec.offsetTop && scrollPos < (sec.offsetTop + sec.offsetHeight)) {
+      subLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + sec.id);
+      });
+    }
+  });
+}, { passive: true });
+
+/* ── INTERSECTION OBSERVER — REVEAL SYSTEM ── */
+const allReveal = document.querySelectorAll('.rv, .rv-left, .rv-right, .section-line');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -50px 0px' });
+allReveal.forEach(el => io.observe(el));
+
+/* ── FORM ACTIONS ── */
+function handleSubmit(e) {
+  e.preventDefault();
+  document.getElementById('form-success').style.display = 'block';
+  e.target.reset();
+  return false;
+}
+
+function selectPackage(pkgName) {
+  document.getElementById('contactDestination').value = pkgName;
+}
+
+/* ── FLYER LIGHTBOX MODAL ACTIONS ── */
+const lightbox = document.getElementById('flyerLightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxTitle = document.getElementById('lightboxTitle');
+const lightboxDesc = document.getElementById('lightboxDesc');
+
+function openFlyer(src, title, desc) {
+  lightboxImg.src = src;
+  lightboxTitle.textContent = title;
+  lightboxDesc.textContent = desc;
+  lightbox.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeFlyer() {
+  lightbox.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+lightbox.addEventListener('click', e => {
+  if (e.target === lightbox) closeFlyer();
+});
+
+/* ── HERO SCROLL PARALLAX ── */
+const heroBg = document.querySelector('.hero-bg');
+window.addEventListener('scroll', () => {
+  const sy = window.scrollY;
+  if (sy < window.innerHeight) {
+    heroBg.style.transform = `translateY(${sy * 0.35}px) scale(1.02)`;
+  }
+}, { passive: true });
+</script>
+</body>
+</html>
