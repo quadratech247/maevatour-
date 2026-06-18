@@ -1,0 +1,456 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>About Maeva â€” Our Story &amp; Mission | Maeva Tours</title>
+<meta name="description" content="Meet Maeva â€” born in the Islands of Tahiti, driven by a passion for sharing the world's most breathtaking destinations. Discover the heart behind Maeva Tours."/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ocean:#05152d; --lagoon:#15627a; --coral:#f05d47; --sand:#f8f4ed;
+  --pearl:#fdfbf9; --gold:#dfba6b; --white:#ffffff; --text:#1b222d;
+  --text-light:#526071;
+  --serif:'Cormorant Garamond',Georgia,serif; --sans:'Outfit',sans-serif;
+  --transition:all 0.45s cubic-bezier(0.25,0.8,0.25,1);
+  --shadow-sm:0 4px 12px rgba(5,21,45,0.05);
+  --shadow-md:0 16px 40px rgba(5,21,45,0.10);
+  --shadow-lg:0 32px 72px rgba(5,21,45,0.16);
+  --border-radius:12px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);color:var(--text);background:var(--pearl);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+#scroll-progress{position:fixed;top:0;left:0;height:4px;width:0%;background:linear-gradient(90deg,var(--lagoon),var(--coral),var(--gold));z-index:9999;transition:width 0.1s linear;}
+#loader{position:fixed;inset:0;z-index:10000;background:var(--ocean);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity 0.8s cubic-bezier(0.77,0,0.18,1),visibility 0.8s ease;}
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+.loader-brand{font-family:var(--serif);font-size:3rem;color:var(--gold);font-weight:300;letter-spacing:0.1em;clip-path:inset(0 100% 0 0);animation:revealText 1.2s 0.2s cubic-bezier(0.77,0,0.18,1) forwards;}
+@keyframes revealText{to{clip-path:inset(0 0% 0 0);}}
+.loader-track{width:240px;height:2px;background:rgba(255,255,255,0.08);position:relative;overflow:hidden;border-radius:2px;}
+.loader-fill{position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,var(--lagoon),var(--coral));animation:loadFill 1.5s 0.3s cubic-bezier(0.77,0,0.18,1) forwards;}
+@keyframes loadFill{to{left:0;}}
+.loader-pct{font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.4);}
+.cursor{width:8px;height:8px;border-radius:50%;background:var(--coral);position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.1s;}
+.cursor-ring{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--coral);position:fixed;top:0;left:0;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);opacity:0.6;transition:width 0.3s,height 0.3s,border-color 0.3s;}
+nav{position:fixed;top:0;width:100%;z-index:500;padding:28px 60px;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);background:rgba(5,21,45,0.95);backdrop-filter:blur(15px);border-bottom:1px solid rgba(223,186,107,0.1);}
+nav.scrolled{padding:16px 60px;border-bottom:1px solid rgba(223,186,107,0.15);box-shadow:0 10px 40px rgba(0,0,0,0.15);}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;z-index:600;}
+.nav-logo img{height:44px;filter:brightness(0) invert(1);transition:var(--transition);}
+.nav-logo-text{display:none;font-family:var(--serif);font-size:1.65rem;color:#fff;font-weight:300;letter-spacing:0.05em;}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;position:relative;padding-bottom:4px;transition:color 0.3s;}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1.5px;background:var(--gold);transition:width 0.35s ease;}
+.nav-links a:hover,.nav-links a.active{color:#fff;}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+.nav-cta{background:var(--coral);color:#fff;padding:12px 28px;border-radius:4px;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;font-weight:600;border:1.5px solid var(--coral);transition:var(--transition);}
+.nav-cta:hover{background:transparent;color:var(--coral);box-shadow:0 8px 24px rgba(240,93,71,0.25);}
+.nav-toggle{display:none;background:transparent;border:none;cursor:pointer;z-index:600;padding:4px;}
+.nav-toggle span{display:block;width:24px;height:2px;background:#fff;margin:6px 0;transition:var(--transition);}
+.nav-toggle.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+.nav-toggle.open span:nth-child(2){opacity:0;}
+.nav-toggle.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+#hero{height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:url('images/adventure3-home-pic31.png') center/cover no-repeat;transform:scale(1.08);animation:heroZoom 2.8s cubic-bezier(0.25,0.8,0.25,1) forwards;will-change:transform;}
+@keyframes heroZoom{to{transform:scale(1);}}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(5,21,45,0.85) 0%,rgba(5,21,45,0.45) 50%,rgba(21,98,122,0.55) 100%);}
+.hero-content{position:relative;z-index:2;text-align:center;color:#fff;padding:0 24px;max-width:880px;}
+.hero-eyebrow{font-size:0.75rem;letter-spacing:0.45em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-weight:600;opacity:0;animation:fadeUp 0.9s 0.5s ease forwards;}
+.hero-title{font-family:var(--serif);font-size:clamp(3rem,7.5vw,6.5rem);font-weight:300;line-height:1.08;letter-spacing:-0.02em;margin-bottom:24px;opacity:0;animation:fadeUp 1s 0.75s ease forwards;}
+.hero-title em{font-style:italic;color:var(--gold);}
+.hero-sub{font-size:1.1rem;font-weight:300;color:rgba(255,255,255,0.85);letter-spacing:0.04em;line-height:1.75;margin-bottom:44px;opacity:0;animation:fadeUp 1s 1s ease forwards;}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp 0.9s 1.25s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:none;}}
+.hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,0.45);font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;}
+.scroll-line{width:1px;height:36px;background:rgba(255,255,255,0.2);position:relative;overflow:hidden;}
+.scroll-line::after{content:'';position:absolute;top:-100%;width:100%;height:100%;background:var(--coral);animation:scrollDrop 2.2s ease-in-out infinite;}
+@keyframes scrollDrop{0%{top:-100%;}100%{top:200%;}}
+.btn-primary{background:var(--coral);color:#fff;padding:16px 40px;text-decoration:none;font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;border-radius:4px;display:inline-block;transition:var(--transition);border:1.5px solid var(--coral);}
+.btn-primary:hover{background:transparent;color:var(--coral);transform:translateY(-3px);box-shadow:0 12px 32px rgba(240,93,71,0.22);}
+.btn-outline{background:transparent;color:#fff;padding:16px 40px;text-decoration:none;font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;border-radius:4px;border:1.5px solid rgba(255,255,255,0.5);display:inline-block;transition:var(--transition);}
+.btn-outline:hover{border-color:#fff;background:rgba(255,255,255,0.08);transform:translateY(-3px);}
+.rv{opacity:0;transform:translateY(36px);transition:opacity 0.85s cubic-bezier(0.25,0.46,0.45,0.94),transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94);}
+.rv.visible{opacity:1;transform:none;}
+.rv-left{opacity:0;transform:translateX(-48px);transition:opacity 0.85s ease,transform 0.85s ease;}
+.rv-left.visible{opacity:1;transform:none;}
+.rv-right{opacity:0;transform:translateX(48px);transition:opacity 0.85s ease,transform 0.85s ease;}
+.rv-right.visible{opacity:1;transform:none;}
+.d1{transition-delay:0.08s;}.d2{transition-delay:0.18s;}.d3{transition-delay:0.28s;}.d4{transition-delay:0.38s;}
+.section-eyebrow{font-size:0.72rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--coral);margin-bottom:14px;font-weight:600;}
+.section-title{font-family:var(--serif);font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:300;line-height:1.12;color:var(--ocean);letter-spacing:-0.01em;margin-bottom:20px;}
+.section-title em{font-style:italic;color:var(--lagoon);}
+.section-line{width:0;height:2px;background:var(--coral);margin-bottom:44px;transition:width 1s cubic-bezier(0.25,0.46,0.45,0.94) 0.2s;}
+.section-line.visible{width:72px;}
+.marquee-strip{background:var(--ocean);padding:16px 0;overflow:hidden;border-top:1px solid rgba(223,186,107,0.12);border-bottom:1px solid rgba(223,186,107,0.12);}
+.marquee-inner{display:flex;}
+.marquee-track{display:flex;white-space:nowrap;animation:marquee 36s linear infinite;flex-shrink:0;}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-100%);}}
+.marquee-item{display:inline-flex;align-items:center;gap:14px;color:rgba(255,255,255,0.6);font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;padding:0 36px;font-weight:500;}
+.marquee-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+#meet{padding:130px 80px;background:var(--pearl);display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}
+.meet-images{position:relative;padding-bottom:60px;padding-right:40px;}
+.meet-img-main{width:100%;border-radius:var(--border-radius);overflow:hidden;box-shadow:var(--shadow-lg);aspect-ratio:3/4;position:relative;}
+.meet-img-main img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform 1.4s ease;display:block;}
+.meet-img-main:hover img{transform:scale(1.04);}
+.meet-img-accent{position:absolute;bottom:-20px;right:-20px;width:48%;aspect-ratio:1;border-radius:var(--border-radius);overflow:hidden;box-shadow:var(--shadow-lg);border:6px solid var(--pearl);z-index:2;}
+.meet-img-accent img{width:100%;height:100%;object-fit:cover;display:block;}
+.tahiti-badge{position:absolute;top:50px;left:-20px;background:var(--ocean);color:var(--gold);padding:22px 24px;border-radius:8px;box-shadow:var(--shadow-lg);z-index:3;text-align:center;}
+.tahiti-badge-icon{font-size:2rem;display:block;margin-bottom:6px;}
+.tahiti-badge-label{font-family:var(--serif);font-size:1rem;font-weight:300;color:rgba(255,255,255,0.85);letter-spacing:0.06em;display:block;}
+.tahiti-badge-sub{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.45);display:block;margin-top:4px;}
+.meet-text{}
+.meet-text .tagline{font-family:var(--serif);font-size:1.65rem;font-style:italic;color:var(--ocean);line-height:1.5;margin-bottom:32px;padding-left:24px;border-left:4px solid var(--coral);font-weight:300;}
+.meet-text p{font-size:1.05rem;line-height:1.85;color:var(--text-light);margin-bottom:22px;}
+.meet-text p strong{color:var(--ocean);font-weight:600;}
+.stats-band{background:var(--ocean);padding:0 80px;display:flex;border-top:1px solid rgba(223,186,107,0.12);border-bottom:1px solid rgba(223,186,107,0.12);}
+.stat-cell{flex:1;padding:56px 24px;text-align:center;border-right:1px solid rgba(255,255,255,0.07);cursor:default;transition:var(--transition);position:relative;overflow:hidden;}
+.stat-cell::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(21,98,122,0.3),rgba(223,186,107,0.08));opacity:0;transition:opacity 0.4s;}
+.stat-cell:hover::after{opacity:1;}
+.stat-cell:last-child{border-right:none;}
+.stat-num{font-family:var(--serif);font-size:3.8rem;font-weight:300;color:var(--gold);line-height:1;display:block;}
+.stat-suffix{font-size:2rem;color:var(--coral);font-weight:500;}
+.stat-label{font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-top:10px;font-weight:500;display:block;}
+#values{padding:130px 80px;background:var(--sand);}
+.values-header{text-align:center;max-width:700px;margin:0 auto 72px;}
+.values-header p{font-size:1.05rem;color:var(--text-light);line-height:1.8;margin-top:16px;}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.value-card{background:var(--white);border-radius:var(--border-radius);padding:48px 36px;box-shadow:var(--shadow-sm);border:1px solid rgba(5,21,45,0.04);transition:var(--transition);cursor:default;position:relative;overflow:hidden;}
+.value-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--lagoon),var(--coral));transform:scaleX(0);transform-origin:left;transition:transform 0.5s cubic-bezier(0.25,0.8,0.25,1);}
+.value-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-md);}
+.value-card:hover::before{transform:scaleX(1);}
+.value-icon{font-size:2.8rem;margin-bottom:22px;display:block;}
+.value-card h3{font-family:var(--serif);font-size:1.55rem;color:var(--ocean);margin-bottom:14px;font-weight:600;}
+.value-card p{font-size:0.96rem;line-height:1.78;color:var(--text-light);}
+#story{padding:130px 80px;background:var(--pearl);}
+.story-layout{display:grid;grid-template-columns:1.1fr 0.9fr;gap:90px;align-items:start;}
+.story-timeline{position:relative;padding-left:52px;}
+.story-timeline::before{content:'';position:absolute;left:18px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--lagoon),rgba(21,98,122,0.08));}
+.story-item{position:relative;margin-bottom:52px;}
+.story-item:last-child{margin-bottom:0;}
+.story-dot{position:absolute;left:-52px;top:4px;width:38px;height:38px;border-radius:50%;background:var(--white);border:2.5px solid var(--lagoon);display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:var(--shadow-sm);z-index:2;transition:var(--transition);}
+.story-item:hover .story-dot{background:var(--lagoon);transform:scale(1.12);box-shadow:0 0 0 6px rgba(21,98,122,0.12);}
+.story-content{background:var(--white);padding:30px 32px;border-radius:var(--border-radius);box-shadow:var(--shadow-sm);border:1px solid rgba(5,21,45,0.04);transition:var(--transition);}
+.story-item:hover .story-content{transform:translateX(6px);box-shadow:var(--shadow-md);border-color:rgba(223,186,107,0.2);}
+.story-year{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--coral);font-weight:700;margin-bottom:8px;display:block;}
+.story-content h3{font-family:var(--serif);font-size:1.4rem;color:var(--ocean);margin-bottom:10px;font-weight:600;}
+.story-content p{font-size:0.94rem;line-height:1.75;color:var(--text-light);}
+.story-image-col{position:sticky;top:120px;}
+.story-img-wrap{border-radius:var(--border-radius);overflow:hidden;box-shadow:var(--shadow-lg);aspect-ratio:3/4;}
+.story-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;}
+.story-quote{margin-top:32px;background:var(--ocean);border-radius:var(--border-radius);padding:36px 32px;color:#fff;position:relative;}
+.story-quote::before{content:'\201C';font-family:var(--serif);font-size:6rem;color:var(--gold);opacity:0.3;position:absolute;top:-10px;left:20px;line-height:1;}
+.story-quote p{font-family:var(--serif);font-size:1.3rem;font-style:italic;font-weight:300;line-height:1.6;position:relative;z-index:1;}
+.story-quote cite{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-top:16px;display:block;font-style:normal;font-weight:600;}
+#destinations-about{padding:130px 80px;background:var(--ocean);}
+#destinations-about .section-eyebrow{color:var(--gold);}
+#destinations-about .section-title{color:#fff;}
+.dest-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:56px;}
+.dest-scroll-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.dest-item{position:relative;border-radius:var(--border-radius);overflow:hidden;aspect-ratio:2/3;cursor:pointer;box-shadow:var(--shadow-md);transition:var(--transition);}
+.dest-item:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);}
+.dest-item img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s ease;display:block;}
+.dest-item:hover img{transform:scale(1.08);}
+.dest-item-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,21,45,0.95) 0%,transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:24px 20px;color:#fff;}
+.dest-item-region{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;font-weight:600;}
+.dest-item-name{font-family:var(--serif);font-size:1.45rem;font-weight:300;line-height:1.2;}
+.dest-item-desc{font-size:0.8rem;color:rgba(255,255,255,0.7);margin-top:6px;line-height:1.5;max-height:0;overflow:hidden;transition:max-height 0.4s ease;}
+.dest-item:hover .dest-item-desc{max-height:60px;}
+#why-about{padding:130px 80px;background:var(--sand);}
+.why-header{text-align:center;max-width:700px;margin:0 auto 72px;}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+.why-card{text-align:center;padding:44px 24px;background:var(--white);border-radius:var(--border-radius);box-shadow:var(--shadow-sm);border:1px solid rgba(5,21,45,0.04);transition:var(--transition);cursor:default;position:relative;overflow:hidden;}
+.why-card::after{content:'';position:absolute;inset:0;background:var(--ocean);transform:scaleY(0);transform-origin:bottom;transition:transform 0.45s cubic-bezier(0.77,0,0.18,1);z-index:0;}
+.why-card:hover::after{transform:scaleY(1);}
+.why-card:hover{box-shadow:var(--shadow-md);}
+.why-card>*{position:relative;z-index:1;transition:color 0.35s;}
+.why-card:hover .why-icon{color:var(--gold);}
+.why-card:hover h4,.why-card:hover p{color:rgba(255,255,255,0.9);}
+.why-icon{font-size:2.6rem;display:block;margin-bottom:18px;color:var(--lagoon);}
+.why-card h4{font-family:var(--serif);font-size:1.25rem;color:var(--ocean);margin-bottom:12px;font-weight:600;}
+.why-card p{font-size:0.9rem;color:var(--text-light);line-height:1.7;}
+#gallery-about{padding:130px 80px;background:var(--pearl);}
+.gallery-header{text-align:center;margin-bottom:56px;}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:240px;gap:16px;}
+.gallery-item{overflow:hidden;border-radius:var(--border-radius);cursor:pointer;position:relative;}
+.gallery-item:nth-child(1){grid-column:span 2;grid-row:span 2;}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s ease;display:block;}
+.gallery-item:hover img{transform:scale(1.08);}
+.gallery-item-overlay{position:absolute;inset:0;background:rgba(5,21,45,0.6);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.4s;}
+.gallery-item:hover .gallery-item-overlay{opacity:1;}
+.gallery-item-overlay span{font-family:var(--serif);color:#fff;font-size:1.2rem;font-style:italic;font-weight:300;letter-spacing:0.06em;}
+#contact-about{padding:130px 80px;background:var(--ocean);position:relative;overflow:hidden;}
+#contact-about::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(21,98,122,0.35) 0%,transparent 65%);}
+.contact-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr 0.9fr;gap:90px;align-items:start;}
+.contact-form-wrap .section-eyebrow{color:var(--gold);}
+.contact-form-wrap .section-title{color:#fff;}
+.contact-form-wrap > p{font-size:1.05rem;color:rgba(255,255,255,0.7);line-height:1.8;margin-bottom:40px;}
+.contact-form{display:flex;flex-direction:column;gap:20px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-group{display:flex;flex-direction:column;gap:8px;}
+.form-group label{font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.5);font-weight:600;}
+.form-group input,.form-group select,.form-group textarea{background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12);color:#fff;padding:14px 18px;font-family:var(--sans);font-size:0.95rem;border-radius:6px;outline:none;transition:var(--transition);}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(255,255,255,0.3);}
+.form-group select option{background:var(--ocean);}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);background:rgba(255,255,255,0.1);}
+.form-group textarea{resize:vertical;min-height:120px;}
+.form-submit{background:var(--coral);color:#fff;padding:16px 48px;border:1.5px solid var(--coral);cursor:pointer;font-family:var(--sans);font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;border-radius:4px;align-self:flex-start;transition:var(--transition);}
+.form-submit:hover{background:transparent;color:var(--coral);transform:translateY(-3px);box-shadow:0 12px 30px rgba(240,93,71,0.25);}
+#form-success{display:none;color:var(--gold);font-size:0.92rem;margin-top:12px;padding:14px 18px;background:rgba(223,186,107,0.1);border-radius:4px;border-left:4px solid var(--gold);}
+.contact-info{padding-top:16px;}
+.contact-info h3{font-family:var(--serif);font-size:2rem;font-weight:300;color:#fff;margin-bottom:36px;}
+.contact-detail{display:flex;gap:20px;align-items:flex-start;margin-bottom:28px;}
+.contact-icon{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.08);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;transition:var(--transition);border:1.5px solid rgba(223,186,107,0.2);}
+.contact-detail:hover .contact-icon{background:var(--coral);border-color:var(--coral);color:#fff;transform:scale(1.1);}
+.contact-detail-text p{font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:4px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500;}
+.contact-detail-text a,.contact-detail-text span{color:rgba(255,255,255,0.85);font-size:1.02rem;font-weight:600;text-decoration:none;display:block;transition:color 0.2s;}
+.contact-detail-text a:hover{color:var(--gold);}
+.social-links{display:flex;gap:14px;margin-top:36px;}
+.social-link{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.6);text-decoration:none;font-size:1.05rem;transition:var(--transition);}
+.social-link:hover{background:var(--coral);border-color:var(--coral);color:#fff;transform:translateY(-3px);}
+footer{background:#02091a;color:rgba(255,255,255,0.45);padding:60px 80px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:30px;border-top:1px solid rgba(223,186,107,0.1);}
+.footer-logo img{height:36px;filter:brightness(0) invert(1);opacity:0.7;}
+.footer-logo-text{display:none;font-family:var(--serif);font-size:1.4rem;color:rgba(255,255,255,0.7);font-weight:300;}
+footer p{font-size:0.78rem;}
+.footer-links{display:flex;gap:28px;list-style:none;}
+.footer-links a{color:rgba(255,255,255,0.4);text-decoration:none;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.3s;}
+.footer-links a:hover{color:var(--gold);}
+@media(max-width:1100px){#meet,#story{padding:100px 40px;gap:60px;}#values,#why-about,#gallery-about,#contact-about,#destinations-about{padding:100px 40px;}nav{padding:20px 40px;}nav.scrolled{padding:12px 40px;}.stats-band{padding:0 40px;}}
+@media(max-width:900px){#meet{grid-template-columns:1fr;}.story-layout{grid-template-columns:1fr;gap:50px;}.story-image-col{position:static;}.values-grid{grid-template-columns:1fr 1fr;}.why-grid{grid-template-columns:1fr 1fr;}.dest-scroll-grid{grid-template-columns:1fr 1fr;}.gallery-grid{grid-template-columns:1fr 1fr;}.gallery-item:nth-child(1){grid-column:span 2;}.contact-inner{grid-template-columns:1fr;gap:60px;}}
+@media(max-width:768px){#meet,#story,#values,#why-about,#gallery-about,#contact-about,#destinations-about{padding:80px 24px;}nav{padding:18px 24px;}nav.scrolled{padding:12px 24px;}.nav-toggle{display:block;}.nav-links{position:fixed;inset:0;top:0;background:var(--ocean);flex-direction:column;align-items:center;justify-content:center;gap:40px;transform:translateX(100%);transition:transform 0.6s cubic-bezier(0.77,0,0.18,1);z-index:550;}.nav-links.active{transform:translateX(0);}.nav-links a{font-size:1.15rem;}.nav-cta{display:none;}.stats-band{flex-direction:column;padding:0;}.stat-cell{border-right:none;border-bottom:1px solid rgba(255,255,255,0.07);}.values-grid{grid-template-columns:1fr;}.why-grid{grid-template-columns:1fr 1fr;}.dest-scroll-grid{grid-template-columns:1fr 1fr;}.form-row{grid-template-columns:1fr;}footer{flex-direction:column;text-align:center;padding:40px 24px;}.footer-links{flex-wrap:wrap;justify-content:center;}}
+</style>
+</head>
+<body>
+<div id="scroll-progress"></div>
+<div id="loader">
+  <div class="loader-brand">Maeva Tours</div>
+  <div class="loader-track"><div class="loader-fill"></div></div>
+  <div class="loader-pct">Loadingâ€¦</div>
+</div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="images/Marva-logo.png" alt="Maeva Tours" onerror="this.style.display='none';document.querySelector('.nav-logo-text').style.display='block'"/>
+    <span class="nav-logo-text">Maeva Tours</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#meet" class="active">About</a></li>
+    <li><a href="index.html#destinations">Destinations</a></li>
+    <li><a href="packages.html">Packages</a></li>
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#testimonials">Stories</a></li>
+    <li><a href="#contact-about">Contact</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:20px;">
+    <a href="#contact-about" class="nav-cta">Plan a Trip</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">&#10022; Ia Ora Na e Maeva &#10022;</p>
+    <h1 class="hero-title">The Heart Behind<br><em>Maeva Tours</em></h1>
+    <p class="hero-sub">Born in the Islands of Tahiti, driven by an unstoppable passion<br>to share the world's most breathtaking destinations</p>
+    <div class="hero-btns">
+      <a href="#meet" class="btn-primary">Meet Maeva</a>
+      <a href="#contact-about" class="btn-outline">Plan Your Journey</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div><span>Scroll</span></div>
+</section>
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-inner">
+    <div class="marquee-track">
+      <span class="marquee-item">Tahiti<span class="marquee-dot"></span></span>
+      <span class="marquee-item">California<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Mexico Cruise<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Maldives<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Fiji Islands<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Morocco<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Japan<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Pacific Adventures<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Tahiti<span class="marquee-dot"></span></span>
+      <span class="marquee-item">California<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Mexico Cruise<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Maldives<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Fiji Islands<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Morocco<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Japan<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Pacific Adventures<span class="marquee-dot"></span></span>
+    </div>
+    <div class="marquee-track" aria-hidden="true">
+      <span class="marquee-item">Tahiti<span class="marquee-dot"></span></span>
+      <span class="marquee-item">California<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Mexico Cruise<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Maldives<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Fiji Islands<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Morocco<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Japan<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Pacific Adventures<span class="marquee-dot"></span></span>
+    </div>
+  </div>
+</div>
+<section id="meet">
+  <div class="meet-images rv-left">
+    <div class="meet-img-main">
+      <img src="images/WhatsApp-Image-2025-06-30-at-1.56.16-PM-1170x1200.jpeg" alt="Maeva â€” Founder of Maeva Tours" onerror="this.src='images/beautiful-scaled.jpg'"/>
+    </div>
+    <div class="meet-img-accent">
+      <img src="images/unnamed.png" alt="Tahiti Islands" onerror="this.src='images/dest-tahiti.jpg'"/>
+    </div>
+    <div class="tahiti-badge">
+      <span class="tahiti-badge-icon">&#127802;</span>
+      <span class="tahiti-badge-label">From Tahiti</span>
+      <span class="tahiti-badge-sub">French Polynesia</span>
+    </div>
+  </div>
+  <div class="meet-text rv-right">
+    <p class="section-eyebrow rv d1">Our Story</p>
+    <div class="section-line rv d2"></div>
+    <h2 class="section-title rv d2">Meet <em>Maeva</em> â€”<br>Your Guide to the World</h2>
+    <blockquote class="tagline rv d3">"Ia Ora Na e Maeva in The Islands of Tahiti â€” Welcome to my world."</blockquote>
+    <p class="rv d3">My name is <strong>Maeva</strong>, and I was born and raised in the breathtaking Islands of Tahiti â€” a place where turquoise lagoons meet lush mountains, and every sunrise feels like a gift. Growing up surrounded by such extraordinary natural beauty instilled in me a deep appreciation for travel and a burning desire to share that magic with others.</p>
+    <p class="rv d4">I am driven by the desire to help people <strong>discover the world</strong> in a way that goes beyond the ordinary tourist experience. Every journey I craft is a personal invitation to immerse yourself in culture, nature, and the authentic rhythms of life in places that will leave you forever changed.</p>
+    <p class="rv d4">At <strong>Maeva Tours</strong>, we don't just book trips â€” we curate life-defining experiences. From the golden coasts of California to the ancient souks of Morocco, from Caribbean cruises to the pristine atolls of the Pacific, every itinerary carries a piece of my heart.</p>
+    <a href="#contact-about" class="btn-primary rv" style="margin-top:16px;">Plan Your Dream Trip</a>
+  </div>
+</section>
+<div class="stats-band">
+  <div class="stat-cell rv"><span class="stat-num"><span class="count-up" data-target="500">0</span><span class="stat-suffix">+</span></span><span class="stat-label">Happy Travelers</span></div>
+  <div class="stat-cell rv d1"><span class="stat-num"><span class="count-up" data-target="25">0</span><span class="stat-suffix">+</span></span><span class="stat-label">Destinations Covered</span></div>
+  <div class="stat-cell rv d2"><span class="stat-num"><span class="count-up" data-target="10">0</span><span class="stat-suffix">+</span></span><span class="stat-label">Years of Experience</span></div>
+  <div class="stat-cell rv d3"><span class="stat-num"><span class="count-up" data-target="98">0</span><span class="stat-suffix">%</span></span><span class="stat-label">Client Satisfaction</span></div>
+</div>
+<section id="values">
+  <div class="values-header rv">
+    <p class="section-eyebrow">What Drives Us</p>
+    <div class="section-line"></div>
+    <h2 class="section-title">Our <em>Core Values</em></h2>
+    <p>Every journey we craft is guided by principles that ensure you experience the world at its very finest.</p>
+  </div>
+  <div class="values-grid">
+    <div class="value-card rv"><span class="value-icon">&#127754;</span><h3>Authentic Experiences</h3><p>We go beyond tourist traps to connect you with the real soul of each destination â€” local communities, hidden gems, and genuine cultural immersion that creates lasting memories.</p></div>
+    <div class="value-card rv d1"><span class="value-icon">&#10024;</span><h3>Tailored Perfection</h3><p>No two travelers are the same. Every itinerary is handcrafted to match your unique dreams, preferences, budget, and travel style â€” because your journey should be as individual as you are.</p></div>
+    <div class="value-card rv d2"><span class="value-icon">&#129309;</span><h3>Trusted Guidance</h3><p>With deep roots in Tahiti and years of global travel expertise, we provide honest, knowledgeable guidance you can rely on from the first inquiry to the final farewell.</p></div>
+    <div class="value-card rv"><span class="value-icon">&#127758;</span><h3>Responsible Travel</h3><p>We believe in protecting the beautiful world we explore. Our itineraries are designed with sustainability in mind, supporting local economies and minimizing environmental impact.</p></div>
+    <div class="value-card rv d1"><span class="value-icon">&#128155;</span><h3>Passionate Service</h3><p>Travel is our passion, not just our business. We pour genuine love into every detail â€” from seamless logistics to those magical unexpected moments that make a trip unforgettable.</p></div>
+    <div class="value-card rv d2"><span class="value-icon">&#128737;</span><h3>Peace of Mind</h3><p>Your safety and comfort are our top priorities. We handle every detail with precision so you can focus entirely on the joy of discovery, knowing you're in expert hands.</p></div>
+  </div>
+</section>
+<section id="story">
+  <div class="rv" style="max-width:600px;margin-bottom:72px;">
+    <p class="section-eyebrow">My Journey</p>
+    <div class="section-line"></div>
+    <h2 class="section-title">How <em>Maeva Tours</em><br>Came to Be</h2>
+  </div>
+  <div class="story-layout">
+    <div class="story-timeline">
+      <div class="story-item rv"><div class="story-dot">&#127802;</div><div class="story-content"><span class="story-year">The Beginning</span><h3>Growing Up in Paradise</h3><p>Born and raised on the Islands of Tahiti, I grew up surrounded by nature's most stunning canvas â€” crystal lagoons, emerald mountains, and a culture rich in warmth and tradition. This paradise was my first teacher, showing me that the world is full of extraordinary beauty waiting to be shared.</p></div></div>
+      <div class="story-item rv d1"><div class="story-dot">&#9992;</div><div class="story-content"><span class="story-year">The Discovery</span><h3>Falling in Love with Travel</h3><p>My first journey beyond Tahiti opened my eyes to an entire world of wonder. From the neon-lit streets of Tokyo to the sun-drenched coasts of California, I discovered that every destination has a unique story to tell â€” and I became obsessed with learning them all.</p></div></div>
+      <div class="story-item rv d2"><div class="story-dot">&#128161;</div><div class="story-content"><span class="story-year">The Vision</span><h3>A Dream Takes Shape</h3><p>After years of exploring the globe and connecting with travelers from every walk of life, I realized my true calling: to be the bridge between dreamers and their dream destinations. I wanted to create journeys that transform â€” not just vacations that tick boxes.</p></div></div>
+      <div class="story-item rv d3"><div class="story-dot">&#128640;</div><div class="story-content"><span class="story-year">Maeva Tours is Born</span><h3>Building Something Beautiful</h3><p>Maeva Tours was born from a simple belief: everyone deserves to experience the world's magic. Today, we craft bespoke itineraries for adventurers, families, couples, and solo explorers â€” all united by a love of discovery.</p></div></div>
+      <div class="story-item rv d4"><div class="story-dot">&#11088;</div><div class="story-content"><span class="story-year">Today &amp; Beyond</span><h3>500+ Journeys, Infinite Memories</h3><p>With over 500 happy travelers and counting, Maeva Tours continues to grow â€” not in size, but in the depth of experiences we create. Every traveler's smile and every "best trip of my life" message fuels our passion to do even more.</p></div></div>
+    </div>
+    <div class="story-image-col rv-right">
+      <div class="story-img-wrap"><img src="images/beautiful-scaled.jpg" alt="Maeva's world" onerror="this.src='images/adventure3-home-pic31.png'"/></div>
+      <div class="story-quote"><p>"Travel is the only thing you can spend money on that truly makes you richer."</p><cite>â€” Maeva, Founder of Maeva Tours</cite></div>
+    </div>
+  </div>
+</section>
+<section id="destinations-about">
+  <div class="dest-header rv">
+    <div>
+      <p class="section-eyebrow">Where We'll Take You</p>
+      <h2 class="section-title">Our <em>Featured</em> Destinations</h2>
+    </div>
+    <a href="packages.html" class="btn-outline rv-right">View All Packages &#8594;</a>
+  </div>
+  <div class="dest-scroll-grid">
+    <div class="dest-item rv"><img src="images/dest-tahiti.jpg" alt="Tahiti"/><div class="dest-item-overlay"><span class="dest-item-region">French Polynesia</span><div class="dest-item-name">Tahiti</div><p class="dest-item-desc">Maeva's home â€” overwater bungalows, turquoise lagoons, and pure Polynesian magic.</p></div></div>
+    <div class="dest-item rv d1"><img src="images/dest-fiji.jpg" alt="Fiji"/><div class="dest-item-overlay"><span class="dest-item-region">South Pacific</span><div class="dest-item-name">Fiji Islands</div><p class="dest-item-desc">Over 300 islands of pristine beaches and vibrant coral reefs.</p></div></div>
+    <div class="dest-item rv d2"><img src="images/dest-maldives.jpg" alt="Maldives"/><div class="dest-item-overlay"><span class="dest-item-region">Indian Ocean</span><div class="dest-item-name">Maldives</div><p class="dest-item-desc">Crystal waters, luxury retreats, and sunsets that defy description.</p></div></div>
+    <div class="dest-item rv d3"><img src="images/dest-morocco.jpg" alt="Morocco"/><div class="dest-item-overlay"><span class="dest-item-region">North Africa</span><div class="dest-item-name">Morocco</div><p class="dest-item-desc">Ancient medinas, Saharan dunes, and a tapestry of vibrant culture.</p></div></div>
+  </div>
+</section>
+<section id="why-about">
+  <div class="why-header rv">
+    <p class="section-eyebrow">Why Choose Us</p>
+    <div class="section-line"></div>
+    <h2 class="section-title">The <em>Maeva</em> Difference</h2>
+  </div>
+  <div class="why-grid">
+    <div class="why-card rv"><span class="why-icon">&#127802;</span><h4>Tahitian Roots</h4><p>Insider knowledge from a native Polynesian who knows the Pacific like no one else.</p></div>
+    <div class="why-card rv d1"><span class="why-icon">&#127912;</span><h4>Bespoke Itineraries</h4><p>Every trip is uniquely designed for you â€” your pace, your passions, your perfect journey.</p></div>
+    <div class="why-card rv d2"><span class="why-icon">&#128222;</span><h4>24/7 Support</h4><p>Never feel alone on the road â€” we're always just a call away, wherever you are in the world.</p></div>
+    <div class="why-card rv d3"><span class="why-icon">&#128142;</span><h4>Premium Quality</h4><p>Carefully vetted hotels, guides, and experiences â€” only the finest for your adventure.</p></div>
+  </div>
+</section>
+<section id="gallery-about">
+  <div class="gallery-header rv">
+    <p class="section-eyebrow">Through the Lens</p>
+    <div class="section-line" style="margin:10px auto 0;"></div>
+    <h2 class="section-title">A World Worth <em>Exploring</em></h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item"><img src="images/adventure3-home-pic31.png" alt="Tropical Paradise"/><div class="gallery-item-overlay"><span>Tropical Paradise</span></div></div>
+    <div class="gallery-item"><img src="images/dest-tahiti.jpg" alt="Tahiti Lagoon"/><div class="gallery-item-overlay"><span>Tahiti Lagoon</span></div></div>
+    <div class="gallery-item"><img src="images/dest-maldives.jpg" alt="Maldives"/><div class="gallery-item-overlay"><span>Maldives</span></div></div>
+    <div class="gallery-item"><img src="images/dest-fiji.jpg" alt="Fiji Islands"/><div class="gallery-item-overlay"><span>Fiji Islands</span></div></div>
+    <div class="gallery-item"><img src="images/dest-morocco.jpg" alt="Morocco"/><div class="gallery-item-overlay"><span>Morocco</span></div></div>
+  </div>
+</section>
+<section id="contact-about">
+  <div class="contact-inner">
+    <div class="contact-form-wrap">
+      <p class="section-eyebrow rv">Get in Touch</p>
+      <div class="section-line rv d1" style="background:var(--gold);"></div>
+      <h2 class="section-title rv d1">Let's Plan Your<br><em>Perfect Journey</em></h2>
+      <p class="rv d2">Ready to discover the world with Maeva? Share your dream destination and we'll craft an unforgettable experience tailored just for you.</p>
+      <form class="contact-form rv d3" id="contactForm">
+        <div class="form-row">
+          <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" name="name" placeholder="Your name" required/></div>
+          <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" name="email" placeholder="your@email.com" required/></div>
+        </div>
+        <div class="form-group"><label for="destination">Dream Destination</label><select id="destination" name="destination"><option value="">Select a destinationâ€¦</option><option>Tahiti &amp; French Polynesia</option><option>Fiji Islands</option><option>Maldives</option><option>Morocco</option><option>California Experience</option><option>Mexico Cruise</option><option>Japan</option><option>Custom / Not sure yet</option></select></div>
+        <div class="form-group"><label for="message">Tell Me About Your Dream Trip</label><textarea id="message" name="message" placeholder="Travel dates, group size, special requestsâ€¦"></textarea></div>
+        <button type="submit" class="form-submit" id="submitBtn">Send My Enquiry</button>
+        <div id="form-success">&#10003; Thank you! Maeva will be in touch within 24 hours.</div>
+      </form>
+    </div>
+    <div class="contact-info rv-right">
+      <h3>Connect with Maeva</h3>
+      <div class="contact-detail"><div class="contact-icon">&#128231;</div><div class="contact-detail-text"><p>Email Us</p><a href="mailto:info@maevatour.com">info@maevatour.com</a></div></div>
+      <div class="contact-detail"><div class="contact-icon">&#128241;</div><div class="contact-detail-text"><p>WhatsApp / Phone</p><a href="tel:+1">Available on Request</a><span style="font-size:0.82rem;color:rgba(255,255,255,0.5);font-weight:400;">Response within 24 hours</span></div></div>
+      <div class="contact-detail"><div class="contact-icon">&#127758;</div><div class="contact-detail-text"><p>Based In</p><span>Tahiti, French Polynesia</span><span style="font-size:0.82rem;color:rgba(255,255,255,0.5);font-weight:400;">Serving clients worldwide</span></div></div>
+      <div class="contact-detail"><div class="contact-icon">&#9200;</div><div class="contact-detail-text"><p>Office Hours</p><span>Mon â€“ Sat, 8 AM â€“ 8 PM</span><span style="font-size:0.82rem;color:rgba(255,255,255,0.5);font-weight:400;">Tahiti Time (GMT-10)</span></div></div>
+      <div class="social-links">
+        <a href="https://www.instagram.com/maevatour" target="_blank" rel="noopener" class="social-link" title="Instagram">&#128247;</a>
+        <a href="https://www.facebook.com/maevatour" target="_blank" rel="noopener" class="social-link" title="Facebook">&#128216;</a>
+        <a href="https://wa.me/" target="_blank" rel="noopener" class="social-link" title="WhatsApp">&#128172;</a>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="footer-logo"><img src="images/Marva-logo.png" alt="Maeva Tours" onerror="this.style.display='none';document.querySelector('.footer-logo-text').style.display='block'"/><span class="footer-logo-text">Maeva Tours</span></div>
+  <p>&#169; 2025 Maeva Tours. All rights reserved. Crafted with &#9825; from Tahiti.</p>
+  <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="packages.html">Packages</a></li><li><a href="#contact-about">Contact</a></li></ul>
+</footer>
+<script>
+window.addEventListener('load',function(){setTimeout(function(){document.getElementById('loader').classList.add('hidden');},1800);});
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+document.addEventListener('mousemove',function(e){cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';});
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>50);const total=document.body.scrollHeight-window.innerHeight;document.getElementById('scroll-progress').style.width=(total>0?(window.scrollY/total)*100:0)+'%';});
+const navToggle=document.getElementById('navToggle'),navLinks=document.getElementById('navLinks');
+navToggle.addEventListener('click',function(){navToggle.classList.toggle('open');navLinks.classList.toggle('active');});
+navLinks.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){navToggle.classList.remove('open');navLinks.classList.remove('active');});});
+const observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.12});
+document.querySelectorAll('.rv,.rv-left,.rv-right,.section-line').forEach(function(el){observer.observe(el);});
+const countObs=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){const el=entry.target,target=parseInt(el.dataset.target,10),dur=1800,start=performance.now();function anim(now){const p=Math.min((now-start)/dur,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(e*target);if(p<1)requestAnimationFrame(anim);}requestAnimationFrame(anim);countObs.unobserve(el);}});},{threshold:0.5});
+document.querySelectorAll('.count-up').forEach(function(el){countObs.observe(el);});
+document.getElementById('contactForm').addEventListener('submit',function(e){e.preventDefault();const btn=document.getElementById('submitBtn');btn.textContent='Sendingâ€¦';btn.disabled=true;setTimeout(function(){document.getElementById('form-success').style.display='block';btn.textContent='Sent!';document.getElementById('contactForm').reset();setTimeout(function(){btn.textContent='Send My Enquiry';btn.disabled=false;},3000);},1200);});
+</script>
+</body>
+</html>
